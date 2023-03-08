@@ -1,22 +1,25 @@
 """
 a script to test the esc/motors on the rov pi
 """
-
 import RPi.GPIO as GPIO
-import time 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)             # choose BCM or ---BOARD(one we use)---  
-GPIO.setup(12, GPIO.OUT)           # set GPIO12 as an output   
+import time
 
-try:
-    p = GPIO.PWM(12, 50)
-    p.start(10)
-    time.sleep(3)
-    p.ChangeDutyCycle(19)
-    time.sleep(5)
-    p.stop()
-    GPIO.cleanup() 
+# Set up GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(12, GPIO.OUT)
 
-except KeyboardInterrupt:          # trap a CTRL+C keyboard interrupt
-    p.stop()
-    GPIO.cleanup() 
+# Set up PWM
+pwm = GPIO.PWM(12, 50)
+pwm.start(0)
+
+# Set speed to 50%
+pwm.ChangeDutyCycle(50)
+time.sleep(5)
+
+# Stop PWM
+pwm.stop()
+
+# Clean up GPIO
+GPIO.cleanup()
+
+

@@ -11,7 +11,7 @@ made by myrccar
 
 
 app = Flask(__name__)
-joy = xbox.JoyStick()
+joy = xbox.Joystick()
 
 @app.route('/')
 def data():
@@ -32,4 +32,4 @@ def data():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="192.168.0.98",port=80)

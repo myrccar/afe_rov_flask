@@ -44,7 +44,7 @@ while True:
 
    try:
     
-    pi.set_servo_pulsewidth(G[0],1700)
+    pi.set_servo_pulsewidth(G[0],1600)
     time.sleep(0.1)
     
    except KeyboardInterrupt:

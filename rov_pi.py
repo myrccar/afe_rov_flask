@@ -2,6 +2,7 @@ import requests
 import json
 import pigpio
 import time
+import asyncio
 
 pi = pigpio.pi()
 
@@ -23,16 +24,17 @@ old_min = -1.0
 old_max = 1.0
 min_pwm = 1430
 max_pwm = 1600
+max_delta = 100
+pwm_stop = 1500
 
+def clamp(num, min_value, max_value):
+    return max(min(num, max_value), min_value)
 
 def convert_controller(old_value):
-    old_range = old_max - old_min
-    new_range = max_pwm - min_pwm
-    new_value = ( (old_value - old_min) / (old_max - old_min) ) * (max_pwm - min_pwm) + min_pwm
-    return int(new_value * 1)
+    return int(clamp(pwm_stop + (max_delta * old_value),min_pwm,max_pwm))
 
 def tank_steering(horizontal, vertical):
-    left = convert_controller(vertical - horizontal)
+    left = convert_controller((vertical - horizontal))
     right = convert_controller(vertical + horizontal)
     print(horizontal,vertical)
     return (left, right)

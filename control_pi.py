@@ -1,6 +1,8 @@
 from flask import Flask
 import xbox
+import time
 
+print("hi i'm running")
 """
 control_pi.py:
 this script is a api made with flask that returns
@@ -11,7 +13,15 @@ made by myrccar
 
 
 app = Flask(__name__)
-joy = xbox.Joystick()
+joy = None
+while joy==None:
+	try:
+		joy=xbox.Joystick()
+	except:
+		print("waiting for joystick, please connect one")
+		time.sleep(1)
+
+print("joystick connected. starting server")
 
 @app.route('/')
 def data():
@@ -32,4 +42,8 @@ def data():
 
 
 if __name__ == '__main__':
-    app.run(host="192.168.0.98",port=80)
+	while True:
+		try:
+			app.run(host="192.168.0.98",port=80)
+		except:
+			print("waiting for network, resting sever")

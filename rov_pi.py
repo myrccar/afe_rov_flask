@@ -35,27 +35,30 @@ def convert_controller(old_value):
 
 def tank_steering(horizontal, vertical):
     left = convert_controller((vertical - horizontal))
-    right = convert_controller(vertical + horizontal)
+    right = convert_controller(-(vertical + horizontal))
     print(horizontal,vertical)
     return (left, right)
+
+def stop():
+    pi.set_servo_pulsewidth(13,1500)
+    pi.set_servo_pulsewidth(12,1500)
+    pi.set_servo_pulsewidth(18,1500)
+    pi.set_servo_pulsewidth(19,1500)
 
 
 
 try:
     while True:
-        r = requests.get("http://192.168.0.98",verify=False)
-        data=r.json()
+        data = requests.get("http://192.168.0.98",verify=False,timeout=0.6).json()
         #update escs
         pi.set_servo_pulsewidth(18,convert_controller(data['axis-4']))
         pi.set_servo_pulsewidth(13,convert_controller(data['axis-3']))
         left,right = tank_steering(data['axis-0'],data['axis-1'])
         print(left,right)
         pi.set_servo_pulsewidth(19,left)
-        pi.set_servo_pulsewidth(12,right)
-        
-
-        
-
-
+        pi.set_servo_pulsewidth(12,right)      
 except KeyboardInterrupt:
-    print("ctrl+c")
+    print("program stoped")
+finally:
+    stop()
+    print("program crashed unknown reson")

@@ -8,10 +8,12 @@ pi = pigpio.pi()
 
 """
 rov_pi.py:
-gets controller data use the control_i.py api
-run motors(later)
+gets controller data use the control_pi.py api
+run motors
 """
 
+
+#todo new func innit or something
 print("inisliseing ese 13,12,18,19 4s")
 pi.set_servo_pulsewidth(13,1500)
 pi.set_servo_pulsewidth(12,1500)
@@ -30,6 +32,7 @@ pwm_stop = 1500
 def clamp(num, min_value, max_value):
     return max(min(num, max_value), min_value)
 
+#todo rename?
 def convert_controller(old_value):
     return int(clamp(pwm_stop + (max_delta * old_value),min_pwm,max_pwm))
 
@@ -46,7 +49,7 @@ def stop():
     pi.set_servo_pulsewidth(19,1500)
 
 
-
+#todo try to reconnect
 try:
     while True:
         data = requests.get("http://192.168.0.98",verify=False,timeout=0.6).json()
@@ -61,4 +64,5 @@ except KeyboardInterrupt:
     print("program stoped")
 finally:
     stop()
+    #todo log error
     print("program crashed unknown reson")

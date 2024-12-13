@@ -65,10 +65,7 @@ def main_loop():
         	pi.set_servo_pulsewidth(13,left)
         	pi.set_servo_pulsewidth(12,right)
         	#change speed
-        	if data['button-3']:
-              		max_delta += 5
-        	if data['button-0']:
-              		max_delta -= 5
+        	
 
 
 while True:
